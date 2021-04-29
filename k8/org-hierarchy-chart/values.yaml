@@ -1,0 +1,20 @@
+deployment:
+  name: "org-hierarchy-deploy"
+  image: "joy1987/org-hierarchy:latest"
+  imageName: "org-hierarchy"
+  port: 8080
+
+app:
+  name: "org-hierarchy-app"
+  pod: "org-hierarchy-pod"
+  sql: "org-hierarchy-mysql"
+service: 
+  name: "org-hierarchy-service"
+  port: 80
+  targetPort: 8080
+
+
+secret:
+  name: "mysql-user-pass"  
+  
+

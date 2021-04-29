@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: "{{.Values.deployment.name}}"
+  labels:
+    name: "{{.Values.deployment.name}}"
+    app: "{{.Values.app.name}}"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+        app: "{{.Values.app.name}}"
+        name: "{{.Values.app.pod}}"
+  template:
+    metadata:
+      name: "{{.Values.app.pod}}"
+      labels:
+        app: "{{.Values.app.name}}"
+        name: org-hierarchy-pod
+    spec:
+      containers:
+        - name: "{{.Values.deployment.imageName}}"
+          image: "{{.Values.deployment.image}}"
+          ports:
+            - containerPort: {{.Values.deployment.port}}
+          env:                  # Environment variables supplied to the Pod
+          - name: SPRING_DATASOURCE_USERNAME # Name of the environment variable
+            valueFrom:          # Get the value of environment variable from kubernetes secrets
+              secretKeyRef:
+                name: "{{.Values.secret.name}}"
+                key: username
+          - name: SPRING_DATASOURCE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: "{{.Values.secret.name}}"
+                key: password
+          - name: SPRING_DATASOURCE_URL
+            valueFrom:
+              secretKeyRef:
+                name: "{{.Values.secret.name}}"
+                key: url
+          - name: SPRING_PROFILES_ACTIVE 
+            value: kube       
