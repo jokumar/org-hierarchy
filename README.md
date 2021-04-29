@@ -1,6 +1,7 @@
 # org-hierarchy
 
-
+Springboot Kotlin project to maintain organization Hierarchy . 
+Deployed in Kubernetes Cluster 
 
 
 ## Build & Deploy 
