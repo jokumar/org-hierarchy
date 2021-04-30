@@ -18,6 +18,10 @@ class EmployeeHierarchyService(@Autowired private val hierarchyJpaRepository: Hi
     : IHierarchyService {
     private val logger = LoggerFactory.getLogger(EmployeeHierarchyService :: class.java.name)
 
+
+    /**
+     * Save the Employee Hierarchy
+     */
     @Transactional
      override fun saveEmployeeHierarchy(map: Map<String, String?>) {
 
@@ -42,6 +46,10 @@ class EmployeeHierarchyService(@Autowired private val hierarchyJpaRepository: Hi
         hierarchyJpaRepository.save(e)
 
     }
+
+    /**
+     * Get All Employee Hierarchy
+     */
     @Transactional
     override fun getAllEmployeeHierarchy(): MutableMap<String, Map<*, *>?> {
         val employeeMap: MutableMap<String, Map<*, *>?> = mutableMapOf()
@@ -60,7 +68,9 @@ class EmployeeHierarchyService(@Autowired private val hierarchyJpaRepository: Hi
         return employeeMap;
     }
 
-
+    /**
+     * Get Supervisor By Name
+     */
     @Transactional
     override fun getSuperVisorByName(name: String,  levels: Int?): MutableMap<String, Map<*, *>> {
 
@@ -77,7 +87,9 @@ class EmployeeHierarchyService(@Autowired private val hierarchyJpaRepository: Hi
         )
     }
 
-
+    /**
+     * Recursive function the get the supervisor based on the levels
+     */
     private fun getSupervisors(element: Employee, list: MutableList<Employee>, levels: Int?,  counter: Int): MutableMap<String, Map<*, *>, > {
         val supervisorMap: MutableMap<String, Map<*, *>> = mutableMapOf();
 
@@ -89,7 +101,9 @@ class EmployeeHierarchyService(@Autowired private val hierarchyJpaRepository: Hi
         return supervisorMap
     }
 
-
+    /**
+     * get the List of all Employee Hierarchy
+     */
     private fun getAll():MutableList<Employee> {
 
         val employeList = hierarchyJpaRepository.findAll()
@@ -102,10 +116,16 @@ class EmployeeHierarchyService(@Autowired private val hierarchyJpaRepository: Hi
         return empList;
     }
 
+    /**
+     * If the employee is the root Element or not
+     */
     private fun isRoot(emp: Employee?): Boolean {
         return !Optional.ofNullable(emp?.supervisorName).isPresent
     }
 
+    /**
+     * Get the immediate subordinates of  an employee
+     */
     private fun getChildren(emp: Employee?, list: List<Employee>): Collection<Employee?> {
 
         val filterMap = list.filter { emp?.name.equals(it.supervisorName) };
@@ -113,6 +133,9 @@ class EmployeeHierarchyService(@Autowired private val hierarchyJpaRepository: Hi
 
     }
 
+    /**
+     * Recursive function to Get list of all Subordinates of an employee
+     */
     private fun getDescendants(element: Employee?, list: MutableList<Employee>): Map<String, Map<*, *>?> {
 
         val children: Collection<Employee?> = getChildren(element, list)

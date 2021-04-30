@@ -1,12 +1,13 @@
 package com.geeks18.controller
 
-import com.geeks18.service.EmployeeHierarchyService
+
+import com.geeks18.service.IHierarchyService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
 
 @RestController
-class OrgHierarchyController(@Autowired private val employeeHierarchyService: EmployeeHierarchyService) {
+class OrgHierarchyController(@Autowired private val employeeHierarchyService: IHierarchyService) {
 
 
     @PostMapping("/organization-structure")
